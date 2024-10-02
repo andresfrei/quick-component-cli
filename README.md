@@ -15,7 +15,7 @@
 
 ## Ejemplo de uso:
 ```bash
-.\NewComponent.ps1 -Name MyNewComponent
+.\quick.ps1 -Name MyNewComponent
 
 ```
 ```bash
