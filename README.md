@@ -41,3 +41,17 @@ export * from "./MyNewComponent";
 ### `-Path`
 - **Descripción**: La ruta donde se creará el componente. Si no se proporciona, el componente se creará en `src/components`.
 - **Requerido**: No. (Predeterminado: `src/components`)
+
+
+
+# Bash script
+
+Ahora compatibilidad con bash
+
+
+## Uso
+
+### Ejecución del Script
+
+```bash
+./quick.sh <MyNewComponent> [path]
