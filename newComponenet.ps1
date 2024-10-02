@@ -1,56 +1,59 @@
 param (
     [Parameter(Mandatory = $true)]
-    [string]$ComponentName
+    [string]$Name,
+    
+    [string]$Path = "src/components"  # Parámetro opcional con valor predeterminado
 )
 
-# Ruta base donde se crearán los componentes
-$basePath = "src/components"
-
 # Ruta completa para el nuevo componente
-$componentPath = Join-Path $basePath $ComponentName
+$componentDirectory = Join-Path $Path $Name
 
 # Crear el directorio del componente
-if (-Not (Test-Path $componentPath)) {
-    New-Item -Path $componentPath -ItemType Directory
+if (-Not (Test-Path $componentDirectory)) {
+    New-Item -Path $componentDirectory -ItemType Directory
 }
 
 # Crear el archivo TSX del componente
 $tsxContent = @"
-import React from "react";
-import { type ${ComponentName}Props } from './${ComponentName}.types';
+import React from 'react';
 
-export function ${ComponentName}(props: ${ComponentName}Props): JSX.Element {
-  return (
-    <div>
-      <h1>${ComponentName} component works!</h1>
-    </div>
-  );
+interface ${ComponentName}Props {
+  // Define your props here
 }
+
+export const $($Name): React.FC<$($Name)Props> = ({}) => {
+    return (
+        <div>
+            $($Name) component works!
+        </div>
+    );
+};
+
 "@
 
-$tsxFilePath = Join-Path $componentPath "$ComponentName.tsx"
+$tsxFilePath = Join-Path $componentDirectory "$Name.tsx"
 Set-Content -Path $tsxFilePath -Value $tsxContent
 
 # Crear el archivo de tipos (types.ts)
 $typesContent = @"
-export type ${ComponentName}Props {
+export interface ${ComponentName}Props {
     // Define your props here
 }
 "@
 
-$typesFilePath = Join-Path $componentPath "$ComponentName.types.ts"
+$typesFilePath = Join-Path $componentDirectory "$Name.types.ts"
 Set-Content -Path $typesFilePath -Value $typesContent
 
 # Crear el archivo index.ts que exporta el componente
 $indexContent = @"
-export * from './$($ComponentName)';
+export * from './$($Name)';
 "@
 
-$indexFilePath = Join-Path $componentPath "index.ts"
+$indexFilePath = Join-Path $componentDirectory "index.ts"
 Set-Content -Path $indexFilePath -Value $indexContent
 
 # Actualizar el archivo barril src/components/index.ts
-$barrelFilePath = Join-Path $basePath "index.ts"
+$barrelFilePath = Join-Path $Path "index.ts"
 
 # Crear el archivo barril si no existe
 if (-Not (Test-Path $barrelFilePath)) {
@@ -58,12 +61,12 @@ if (-Not (Test-Path $barrelFilePath)) {
 }
 
 # Añadir la exportación del nuevo componente al archivo barril
-#$exportStatement = "export * from './$($ComponentName)';"
+$exportStatement = "export * from './$($Name)';"
 
 # Verificar si la exportación ya existe para no duplicar
-if (-Not (Get-Content $barrelFilePath | Select-String -Pattern $ComponentName)) {
+if (-Not (Get-Content $barrelFilePath | Select-String -Pattern $Name)) {
     # Añadir un salto de línea antes de la nueva exportación
-    #Add-Content -Path $barrelFilePath -Value "`r`n$exportStatement"
+    Add-Content -Path $barrelFilePath -Value "`r`n$exportStatement"
 }
 
-Write-Host "Component $ComponentName created successfully at $componentPath and exported in $basePath/index.ts"
+Write-Host "Component $Name created successfully at $componentDirectory and exported in $barrelFilePath"

@@ -15,7 +15,8 @@
 
 ## Ejemplo de uso:
 ```bash
-.\NewComponent.ps1 -ComponentName NombreDelComponente
+.\NewComponent.ps1 -Name MyNewComponent
+
 ```
 ```bash
 src/components/MyNewComponent/
@@ -31,3 +32,12 @@ src/components/index.ts:
 export * from "./MyNewComponent";
 ```
 
+## Opciones
+
+### `-Name`
+- **Descripción**: El nombre del nuevo componente que deseas crear.
+- **Requerido**: Sí.
+
+### `-Path`
+- **Descripción**: La ruta donde se creará el componente. Si no se proporciona, el componente se creará en `src/components`.
+- **Requerido**: No. (Predeterminado: `src/components`)
