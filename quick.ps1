@@ -49,6 +49,7 @@ export type $($Name)Props = {
     # Crear el archivo index.ts que exporta el componente
     $indexContent = @"
 export * from './$($Name)';
+export * from './$($Name).types';
 "@
 
     $indexFilePath = Join-Path $componentDirectory "index.ts"
