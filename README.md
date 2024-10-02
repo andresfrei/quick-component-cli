@@ -13,3 +13,21 @@
 - PowerShell (versión 5.1 o superior)
 - Node.js y npm (opcional, para proyectos de React)
 
+## Ejemplo de uso:
+```bash
+.\NewComponent.ps1 -ComponentName NombreDelComponente
+```
+```bash
+src/components/MyNewComponent/
+│
+├── MyNewComponent.tsx
+├── MyNewComponent.types.ts
+└── index.ts
+```
+
+```bash
+src/components/index.ts:
+
+export * from "./MyNewComponent";
+```
+
